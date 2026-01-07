@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PT Kereta Manik</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ff7ac8,#a80073);
+  color:white;
+  text-align:center;
+}
+
+.page{display:none;}
+.active{display:block;}
+
+.box{
+  background: rgba(255,255,255,0.2);
+  padding:20px;
+  width:360px;
+  margin:20px auto;
+  border-radius:15px;
+  text-align:left;
+}
+
+input, select{
+  width:100%;
+  padding:8px;
+  margin-bottom:10px;
+  border-radius:6px;
+  border:none;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#ff0aad;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+}
+button:hover{
+  background:#a80073;
+  color:white;
+}
+
+.radio-group label{
+  display:block;
+  margin-bottom:6px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HALAMAN 1: SELAMAT DATANG -->
+<div id="page1" class="page active">
+  <h1>🚆 Selamat Datang di PT Kereta Manik</h1>
+  <p>
+    Nikmati perjalanan kereta api yang <b>aman, nyaman, dan terpercaya</b> bersama PT Kereta Manik.<br>
+    Kami siap mengantarkan Anda ke berbagai tujuan dengan pelayanan terbaik.<br><br>
+    <b>Pesan tiket Anda sekarang dan wujudkan perjalanan yang menyenangkan!</b>
+  </p>
+  <button onclick="showPage('page2')">Mulai Pemesanan</button>
+</div>
+
+<!-- HALAMAN 2: NAMA PEMESAN -->
+<div id="page2" class="page">
+  <h2>Nama Pemesan</h2>
+  <div class="box">
+    <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+    <button onclick="simpanNama()">Lanjut</button>
+  </div>
+</div>
+
+<!-- HALAMAN 3: DATA PEMESANAN -->
+<div id="page3" class="page">
+  <h2>Data Pemesanan</h2>
+  <div class="box">
+    <label>Stasiun Asal</label>
+    <select id="asal">
+      <option value="">-- Pilih --</option>
+      <option>Jakarta</option>
+      <option>Bandung</option>
+      <option>Yogyakarta</option>
+      <option>Surabaya</option>
+    </select>
+
+    <label>Stasiun Tujuan</label>
+    <select id="tujuan">
+      <option value="">-- Pilih --</option>
+      <option>Jakarta</option>
+      <option>Bandung</option>
+      <option>Yogyakarta</option>
+      <option>Surabaya</option>
+    </select>
+
+    <label>Tanggal Keberangkatan</label>
+    <input type="date" id="tanggal">
+
+    <label>Jumlah Penumpang</label>
+    <input type="number" id="jumlah" min="1">
+
+    <label>Kelas Kereta</label>
+    <div class="radio-group">
+      <label><input type="radio" name="kelas" value="Ekonomi"> Ekonomi (Rp70.000)</label>
+      <label><input type="radio" name="kelas" value="Bisnis"> Bisnis (Rp100.000)</label>
+      <label><input type="radio" name="kelas" value="Eksekutif"> Eksekutif (Rp150.000)</label>
+    </div>
+
+    <button onclick="simpanData()">Lanjut ke Transaksi</button>
+  </div>
+</div>
+
+<!-- HALAMAN 4: TRANSAKSI -->
+<div id="page4" class="page">
+  <h2>Detail Transaksi</h2>
+  <div class="box" id="detail"></div>
+
+  <div class="box">
+    <label>Metode Pembayaran</label>
+    <select id="metode">
+      <option value="">-- Pilih --</option>
+      <option>Transfer Bank</option>
+      <option>E-Wallet</option>
+      <option>Kartu Kredit</option>
+    </select>
+    <button onclick="bayar()">Bayar Sekarang</button>
+  </div>
+</div>
+
+<!-- HALAMAN 5: TRANSAKSI BERHASIL -->
+<div id="page5" class="page">
+  <h2>🎉 Transaksi Berhasil!</h2>
+  <p>
+    Pembayaran tiket kereta Anda telah <b>berhasil diproses</b>.<br>
+    Tiket Anda sudah tercatat di sistem PT Kereta Manik.<br><br>
+    Kami berharap perjalanan Anda berjalan dengan aman, nyaman, dan menyenangkan.
+  </p>
+  <p><b>Sampai jumpa dan selamat menikmati perjalanan! 🚆✨</b></p>
+  <button onclick="showPage('page6')">Lanjut</button>
+</div>
+
+<!-- HALAMAN 6: TERIMA KASIH -->
+<div id="page6" class="page">
+  <h2>🙏 Terima Kasih</h2>
+  <p>
+    Terima kasih telah mempercayakan perjalanan Anda kepada <b>PT Kereta Manik</b>.<br>
+    Kepuasan dan kenyamanan Anda adalah prioritas kami.<br><br>
+    <b>Sampai jumpa di perjalanan berikutnya. Selamat jalan! 🚆</b>
+  </p>
+  <button onclick="showPage('page1')">Kembali ke Halaman Awal</button>
+</div>
+
+<script>
+let data = {};
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function simpanNama(){
+  let nama=document.getElementById('nama').value.trim();
+  if(!nama){ alert("Nama harus diisi"); return; }
+  data.nama=nama;
+  showPage('page3');
+}
+
+function simpanData(){
+  data.asal=document.getElementById('asal').value;
+  data.tujuan=document.getElementById('tujuan').value;
+  data.tanggal=document.getElementById('tanggal').value;
+  data.jumlah=parseInt(document.getElementById('jumlah').value);
+  let kelas=document.querySelector('input[name="kelas"]:checked');
+
+  if(!data.asal||!data.tujuan||!data.tanggal||!data.jumlah||!kelas){
+    alert("Lengkapi semua data!");
+    return;
+  }
+  if(data.asal===data.tujuan){
+    alert("Stasiun asal dan tujuan tidak boleh sama!");
+    return;
+  }
+
+  data.kelas=kelas.value;
+
+  if(data.kelas==="Ekonomi") data.harga=70000;
+  if(data.kelas==="Bisnis") data.harga=100000;
+  if(data.kelas==="Eksekutif") data.harga=150000;
+
+  data.total=data.harga*data.jumlah;
+
+  document.getElementById('detail').innerHTML=`
+    <p><b>Nama:</b> ${data.nama}</p>
+    <p><b>Rute:</b> ${data.asal} → ${data.tujuan}</p>
+    <p><b>Tanggal:</b> ${data.tanggal}</p>
+    <p><b>Kelas:</b> ${data.kelas}</p>
+    <p><b>Harga / Orang:</b> Rp ${data.harga.toLocaleString()}</p>
+    <p><b>Total Bayar:</b> Rp ${data.total.toLocaleString()}</p>
+  `;
+
+  showPage('page4');
+}
+
+function bayar(){
+  let metode=document.getElementById('metode').value;
+  if(!metode){ alert("Pilih metode pembayaran!"); return; }
+  alert("Pembayaran berhasil melalui " + metode);
+  showPage('page5');
+}
+</script>
+
+</body>
+</html>
